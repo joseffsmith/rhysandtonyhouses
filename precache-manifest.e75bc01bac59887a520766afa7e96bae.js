@@ -4,12 +4,12 @@ self.__precacheManifest = [
     "url": "/rhysandtonyhouses/static/media/image00005.b56cb094.jpeg"
   },
   {
-    "revision": "82a624cba692b08f1913",
-    "url": "/rhysandtonyhouses/static/css/main.6bab09e6.chunk.css"
+    "revision": "f5d8c1aa109121d968b1",
+    "url": "/rhysandtonyhouses/static/css/main.132ba5f9.chunk.css"
   },
   {
-    "revision": "0438fc95b914ecf0432d",
-    "url": "/rhysandtonyhouses/static/js/1.0438fc95.chunk.js"
+    "revision": "6a89b80ccd31caca7785",
+    "url": "/rhysandtonyhouses/static/js/1.6a89b80c.chunk.js"
   },
   {
     "revision": "79ab94e451379d060324",
@@ -152,8 +152,8 @@ self.__precacheManifest = [
     "url": "/rhysandtonyhouses/static/media/image00004.af729924.jpeg"
   },
   {
-    "revision": "82a624cba692b08f1913",
-    "url": "/rhysandtonyhouses/static/js/main.82a624cb.chunk.js"
+    "revision": "f5d8c1aa109121d968b1",
+    "url": "/rhysandtonyhouses/static/js/main.f5d8c1aa.chunk.js"
   },
   {
     "revision": "66b0b2e855e3dacd95f886aa98ac0e74",
@@ -300,7 +300,7 @@ self.__precacheManifest = [
     "url": "/rhysandtonyhouses/static/media/image00041.7fa253e2.jpeg"
   },
   {
-    "revision": "cfa75ed225744e8d757d77b6892a2cf7",
+    "revision": "5a912ff86feffb226c7c451aec9bb6fb",
     "url": "/rhysandtonyhouses/index.html"
   }
 ];
