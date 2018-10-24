@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import  styled, { css } from 'styled-components'
+import  styled, { css } from 'styled-components';
+import ImageGallery from 'react-image-gallery';
+
+const color_grey = "#efefef"
+const color_red = "#a12a2a"
+const color_white = "#f9f9f9"
 
 
 class App extends Component {
@@ -10,6 +14,8 @@ class App extends Component {
     this.HOUSES = [
       {
         'name':'Glenroy Street',
+        'images':require.context("./images/Glenroy Street", false, /.*\.jpeg$/),
+        'images_t':require.context("./images/Glenroy Street thumbs", false, /.*\.jpg$/),
         'features':[
           "7 double bedrooms all with built in wardrobes",
           "3 bathrooms + 1 cloakroom",
@@ -19,39 +25,46 @@ class App extends Component {
           "Furnished",
         ],
         'description':`A fantastic 7 bedroom property situated close to the amenities of Albany Road and 
-                        City Road, making it perfect for all Cardiff students! This completely refurbished 
-                        property boasts a large kitchen with dining room and adjoining lounge with flatscreen TV. 
-                        WiFi is already installed and included within the rental. 
-                        The property has carpet flooring throughout the bedrooms . 3 x fully equipped bathrooms. 
+                        City Road, making it perfect for all Cardiff students!
+                        This completely refurbished property boasts a large kitchen with dining room 
+                        and adjoining lounge with flatscreen TV.
+                        WiFi is already installed and included within the rental.
+                        The property has carpet flooring throughout the bedrooms and 3 fully equipped bathrooms. 
                         Each bedroom has a double bed, built in wardrobe, desk and additional storage areas.
-                        Rent is very competitive at £350 monthly (<£80 per week). Half rent during July/ August
-                        No agency fees
-                        Please feel free to email for any further questions Available date 01/07/19`,
+                        Rent is very competitive at £350 monthly (<£80 per week). 
+                        Half rent during July/ August.
+                        No agency fees.
+                        Please feel free to email for any further questions.
+                        Available date 01/07/19.`,
         'rent': 350,
         'available_date': '01/07/19',
         'bedrooms': 7,
       },
       {
         'name':'Mackintosh Place',
+        'images':require.context("./images/Mackintosh Place", false, /.*\.jpeg$/),
+        'images_t':require.context("./images/Mackintosh Place thumbs", false, /.*\.jpg$/),
         'features':[
           "7 double bathrooms ",
           "2 bathrooms + 1 cloakroom",
           "Dining room",
-          "TV /reception room",
+          "TV/reception room",
           "Available from 1st Jul 2019",
           "Furnished",
         ],
         'description':`A fantastic 7 bedroom property situated close to the amenities of 
                         Albany Road and City Road, making it perfect for all Cardiff students! 
-                        This property boasts a large kitchen with leading to a dining room.
+                        This property boasts a large kitchen leading to a dining room.
                         In addition there is a large living room with flatscreen TV. 
                         The property consists of laminate and carpet flooring throughout. 
-                        2 x fully equipped bathrooms, one brand new in 2018 and the other to 
-                        be refurbished in 2019 ,both in a funky green and white! 
-                        Each bedroom has a double bed, wardrobe, desk and desk- chair.
-                        Rent is very competitive at £350 monthly (<£80 per week). Half rent during July/ August
+                        2 fully equipped bathrooms, one brand new in 2018 and the other to 
+                        be refurbished in 2019, both in a funky green and white! 
+                        Each bedroom has a double bed, wardrobe, desk and desk chair.
+                        Rent is very competitive at £350 monthly (<£80 per week). 
+                        Half rent during July/August.
                         No agency fees
-                        Please feel free to email for any further questions Available date 01/07/19`,
+                        Please feel free to email for any further questions.
+                        Available date 01/07/19`,
         'rent': 350,
         'available_date': '01/07/19',
         'bedrooms': 7,
@@ -59,12 +72,18 @@ class App extends Component {
     ]
     this.state = {
       current_house: "Glenroy Street",
+      current_section: "Info",
     }
   }
 
   handleClick = (e) => { 
     var current_house = e.target.innerHTML
-    this.setState({current_house})
+    this.setState({current_house, current_section: "Info"})
+  }
+
+  handleClickLinks = (e) => {
+    var current_section = e.target.innerHTML
+    this.setState({current_section})
   }
 
   getHouseInfo = () => {
@@ -74,19 +93,35 @@ class App extends Component {
   render() {
     var houseInfo = this.getHouseInfo()
     return (
-      <React.Fragment>
-      <NavBar houses={this.HOUSES} handleClick={this.handleClick}/>
-      <House 
-        name={this.state.current_house} 
-        houses={this.HOUSES} 
-        houseDescription={houseInfo.description}
-        houseFeatures={houseInfo.features}
-
-      />
-      </React.Fragment>
+      <Main>
+        <NavBar 
+          houses={this.HOUSES} 
+          current_house={this.state.current_house} 
+          handleClick={this.handleClick}
+        />
+        <House
+          name={this.state.current_house} 
+          houses={this.HOUSES} 
+          houseDescription={houseInfo.description}
+          houseFeatures={houseInfo.features}
+          handleClickLinks={this.handleClickLinks}
+          current_section={this.state.current_section}
+        />
+      </Main>
     );
   }
 }
+
+const Main = styled.div`
+  max-width:600px;
+  margin:0 auto;
+  line-height: 22px;
+  letter-spacing: .5px;
+  font-size: .85em;
+  padding: 10px;
+  height: 100%;
+  background-color: white;
+`
 
 
 class NavBar extends Component {
@@ -103,7 +138,6 @@ class NavBar extends Component {
       navLinksVisible: !prevState.navLinksVisible
     }))
   }
-
   handleClick = (e) => {
     this.props.handleClick(e)
     this.setState(prevState => ({
@@ -111,62 +145,79 @@ class NavBar extends Component {
     }))
   }
 
-
   render() {
     return (
       <React.Fragment>
-      <NavBarStyled>
-        <MenuIcon onClick={this.handleMenuClick}>
-        ☰
-        </MenuIcon>
-        <NavTitle>
-        Rhys and Tony houses
-        </NavTitle>
-      </NavBarStyled>
-      <NavLinks visible={this.state.navLinksVisible} houses={this.props.houses} handleClick={this.handleClick}/>
+        <NavBarStyled>
+          <MenuIcon onClick={this.handleMenuClick}>
+            ☰
+          </MenuIcon>
+          <NavTitle>
+          Rhys and Tony houses
+          </NavTitle>
+        </NavBarStyled>
+        <NavLinks 
+          visible={this.state.navLinksVisible} 
+          current_house={this.props.current_house} 
+          houses={this.props.houses} 
+          handleClick={this.handleClick}
+        />
       </React.Fragment>
 
     )
   }
 }
+const NavBarStyled = styled.div`
+  background-color:${color_grey};
+  padding: 10px;
 
-const NavBarStyled = styled.div``
+`
 const MenuIcon = styled.div`
   display: inline-block;
   font-size: 2em;
   border-radius: 5px;
   line-height: 30px;
-
-
+  color: ${color_red};
+  cursor: pointer;
 `
 const NavTitle = styled.h1`
   display: inline-block;
   padding: 0px 10px;
   line-height: 30px;
+  font-size: 1.65em;
 `
 
 
 class NavLinks extends Component {
-  constructor(props){
-    super(props)
-
-  }
-
 
   render() {
     return (
-      <NavLinksStyled>
-            
+      <NavLinksStyled> 
       {this.props.visible && this.props.houses.map((house,i) => (
-        <Button onClick = {this.props.handleClick} href="#" value={house.name} key={i}>{house.name}</Button>
+        <div>
+          <Button 
+            onClick={this.props.handleClick} 
+            href="#" 
+            active={this.props.current_house===house.name} 
+            value={house.name} 
+            key={i}
+            >
+              {house.name}
+          </Button>
+        </div>
         ))}
       </NavLinksStyled>
     )
   }
 }
 
-const NavLinksStyled = styled.div``
+const NavLinksStyled = styled.div`
+  margin-bottom: 10px;
+  display:block;
+  position:absolute;
+  background-color:${color_grey};
 
+`
 
 
 class House extends Component {
@@ -181,88 +232,132 @@ class House extends Component {
         'href':'#',
         'name':'Pictures',
       },
+      {
+        'href':'#',
+        'name':'Location',
+      }
     ]
-
-    this.state = {
-      current_section : 'Info'
-    }
   }
 
-  handleClick = (e) => {
-    e.stopPropagation()
-    var current_section = e.target.innerHTML
-    this.setState({current_section})
-  }
 
   render() {
+    console.log(this.props)
     return (
       <React.Fragment>
-      <h2>{this.props.name}</h2>
-      <InfoLinks sections={this.HOUSE_LINKS} handleClick={this.handleClick}/>
-      {this.state.current_section === "Info" && 
-        <Info 
-          name={this.props.name}
-          houses={this.props.houses}
-          section={this.state.current_section}
-          text={this.props.houseDescription}
-          features={this.props.houseFeatures}/>
-      }
+
+        <h2>{this.props.name}</h2>
+        <AboutLinks 
+          sections={this.HOUSE_LINKS} 
+          handleClick={this.props.handleClickLinks} 
+          current_section={this.props.current_section}
+        />
+        
+        {this.props.current_section === "Info" && 
+          <Info 
+            name={this.props.name}
+            houses={this.props.houses}
+            section={this.props.current_section}
+            text={this.props.houseDescription}
+            features={this.props.houseFeatures}/>
+        }
+        {this.props.current_section === "Pictures" &&
+          <Pictures
+            name={this.props.name}
+            houses={this.props.houses}/>
+        }
       </React.Fragment>
     )
   }
 }
 
-const HouseStyled = styled.div``
 
-class InfoLinks extends Component {
-  constructor(props) {
-    super(props);
-  }
+class AboutLinks extends Component {
+
   render() {
     return (
+      <AboutLinksStyled>
+        {this.props.sections.map((section, j) => (
+          <Button href="#" key={j} active={this.props.current_section===section.name} onClick={this.props.handleClick}>{section.name}</Button>
+        ))}
+      </AboutLinksStyled>
+    )
+  }
+}
+
+const AboutLinksStyled = styled.div`
+  margin-bottom: 20px;
+`
+
+class Info extends Component {
+
+  renderDescription(text_string) {
+    return text_string.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
+  }
+
+  render() {
+    var text_array = this.renderDescription(this.props.text)
+    return(
       <React.Fragment>
-        {this.props.sections.map((house, j) => (
-          <Link key={j} name={house.name} handleClick={this.props.handleClick} />
+        <h3> Features </h3>
+        <ul>
+          {this.props.features.map((feature, i) => (
+            <li key={i}>{feature}</li>
+          ))}
+        </ul>
+        <h3> Description </h3>
+        {text_array.map((text, i) => (
+          <p key={i} >{text}</p>
         ))}
       </React.Fragment>
     )
   }
 }
 
-class Link extends Component {
-  constructor(props) {
-    super(props);
-  }
+
+class Pictures extends Component {
 
   render() {
+    let house_images = this.props.houses.find(house => house.name === this.props.name).images;
+    let house_thumbs = this.props.houses.find(house => house.name === this.props.name).images_t;
+    let house_images_mapped = house_images.keys().map(key => (
+        house_images(key)
+      ))
+    let house_thumbs_mapped = house_thumbs.keys().map(key => (
+        house_thumbs(key)
+      ))
+
+    let images = house_images_mapped.map((image, i) => (
+        {
+          original: image,
+          thumbnail: house_thumbs_mapped[i]
+        }
+    ))
     return (
-      <Button href="#" key={this.props.Ikey} onClick={this.props.handleClick}>{this.props.name}</Button>
-    )
+      <ImageGallery 
+        items={images}
+        lazyLoad={true}
+        thumbnailPosition={"top"}
+        showPlayButton={false}
+        showFullscreenButton={false}
+
+      />
+    );
   }
+
 }
 
-class Info extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-
-  render() {
-    return(
-      <React.Fragment>
-      <h3> Features </h3>
-      <ul>
-      {this.props.features.map(feature => (
-        <li>{feature}</li>
-      ))}
-      </ul>
-      <h3> Description </h3>
-      <p>{this.props.text}</p>
-      </React.Fragment>
-    )
-  }
-}
-
+const PictureFrame = styled.div`
+  white-space: nowrap;
+  overflow-x: auto;
+  background: ${color_grey};
+  -webkit-overflow-scrolling: touch;
+`
+const Picture = styled.img`
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px;
+  width: 100%;
+`
 
 
 
@@ -270,17 +365,23 @@ class Info extends Component {
 const Button = styled.button`
   background: transparent;
   border-radius: 3px;
-  border: 2px solid palevioletred;
-  color: palevioletred;
-  margin: 0 1em;
+  border: 2px solid ${color_red};
+  color: ${color_red};
+  margin: .4em .5em;
   padding: 0.25em 1em;
+  font-size: 1.15em;
+  cursor: pointer;
 
-  ${props =>
-    props.primary &&
-    css`
-      background: palevioletred;
-      color: white;
-    `};
+  &:focus {
+    outline: none;
+  }
+
+  ${props => props.active && css`
+    background: ${color_red};
+    color: ${color_white};
+    cursor: default;
+  `}
+
 `
 
 export default App;
