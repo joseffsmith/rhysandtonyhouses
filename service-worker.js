@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/rhysandtonyhouses/precache-manifest.5421fce9b2689e571a94f1c6db3d333d.js"
+  "/rhysandtonyhouses/precache-manifest.1bb81a1905284002962e0e31dd641103.js"
 );
 
 workbox.clientsClaim();
