@@ -136,6 +136,7 @@ const Main = styled.div`
   padding: 10px;
   height: 100%;
   background-color: white;
+  padding-bottom: 150px;
 `
 
 
@@ -287,19 +288,31 @@ class House extends Component {
 
 
 class ContactForm extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      current_house: "Glenroy Street"
+    }
+  }
+
+  handleClick = (e) => {
+    this.setState({current_house: e.target.innerHTML})
+  }
 
   render() {
-
     return(
       <ContactFormStyled>
-        <form action="mailto:joseffsmith@icloud.com?Subject=House%20interest" 
+        <form action={"mailto:joseffsmith@icloud.com?Subject="+this.state.current_house}
             method="POST"
             encType="text/plain"
           >
           <Label htmlFor="house_choice">
             House choice
           </Label>
-          <CustomSelect houses={this.props.houses}/>
+          <CustomSelect 
+            houses={this.props.houses}
+            current_house={this.state.current_house}
+            handleHouseClick={this.handleClick}/>
           <Label htmlFor="name">
             Your name
           </Label>
@@ -390,13 +403,11 @@ class CustomSelect extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      current_house: "Glenroy Street",
       dropdown_visibile: false,
     }
   }
 
   handleClick = (e) => {
-    console.log(e)
     if (this.state.dropdown_visibile) {
       this.setState({dropdown_visibile:false})
     }
@@ -408,15 +419,15 @@ class CustomSelect extends Component {
   handleClickSelection = (e) => {
     this.setState({
       dropdown_visibile: false,
-      current_house: e.target.innerHTML,
     })
+    this.props.handleHouseClick(e)
   }
 
   render(){
     return(
       <SelectWrap>
         <CurrentSelection onClick={this.handleClick}>
-          {this.state.current_house}
+          {this.props.current_house}
         </CurrentSelection>
         {this.state.dropdown_visibile &&
           <Dropdown >
