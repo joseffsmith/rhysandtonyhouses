@@ -6,6 +6,7 @@ import ImageGallery from 'react-image-gallery';
 const color_grey = "#efefef"
 const color_red = "#a12a2a"
 const color_white = "#f9f9f9"
+const color_dark_green = "#0e3f00"
 
 
 class App extends Component {
@@ -78,12 +79,18 @@ class App extends Component {
 
   handleClick = (e) => { 
     var current_house = e.target.innerHTML
-    this.setState({current_house, current_section: "Info"})
+    if (this.state.current_house !== current_house)
+      this.setState({current_house, current_section: "Info"})
   }
 
   handleClickLinks = (e) => {
     var current_section = e.target.innerHTML
-    this.setState({current_section})
+    if (this.state.current_section !== current_section)
+      this.setState({current_section})
+  }
+
+  handleContactClick = (e) => {
+    this.setState({current_house: null})
   }
 
   getHouseInfo = () => {
@@ -98,15 +105,23 @@ class App extends Component {
           houses={this.HOUSES} 
           current_house={this.state.current_house} 
           handleClick={this.handleClick}
+          handleContactClick={this.handleContactClick}
         />
-        <House
-          name={this.state.current_house} 
-          houses={this.HOUSES} 
-          houseDescription={houseInfo.description}
-          houseFeatures={houseInfo.features}
-          handleClickLinks={this.handleClickLinks}
-          current_section={this.state.current_section}
-        />
+        {this.state.current_house && 
+          <House
+            name={this.state.current_house} 
+            houses={this.HOUSES} 
+            houseDescription={houseInfo.description}
+            houseFeatures={houseInfo.features}
+            handleClickLinks={this.handleClickLinks}
+            current_section={this.state.current_section}
+          />
+        }
+        {this.state.current_house === null &&
+          <ContactForm 
+            houses={this.HOUSES}
+          />
+        }
       </Main>
     );
   }
@@ -152,9 +167,12 @@ class NavBar extends Component {
           <MenuIcon onClick={this.handleMenuClick}>
             ☰
           </MenuIcon>
-          <NavTitle>
-          Rhys and Tony houses
-          </NavTitle>
+          <Header>
+            Rhys and Tony houses
+          </Header>
+          <AltButton alignRight={true} onClick={this.props.handleContactClick}>
+            Contact
+          </AltButton>
         </NavBarStyled>
         <NavLinks 
           visible={this.state.navLinksVisible} 
@@ -170,7 +188,6 @@ class NavBar extends Component {
 const NavBarStyled = styled.div`
   background-color:${color_grey};
   padding: 10px;
-
 `
 const MenuIcon = styled.div`
   display: inline-block;
@@ -180,11 +197,11 @@ const MenuIcon = styled.div`
   color: ${color_red};
   cursor: pointer;
 `
-const NavTitle = styled.h1`
+const Header = styled.h1`
   display: inline-block;
   padding: 0px 10px;
   line-height: 30px;
-  font-size: 1.65em;
+  font-size: 1.5em;
 `
 
 
@@ -194,13 +211,13 @@ class NavLinks extends Component {
     return (
       <NavLinksStyled> 
       {this.props.visible && this.props.houses.map((house,i) => (
-        <div>
+        <div key={i}>
           <Button 
             onClick={this.props.handleClick} 
             href="#" 
             active={this.props.current_house===house.name} 
             value={house.name} 
-            key={i}
+
             >
               {house.name}
           </Button>
@@ -239,13 +256,11 @@ class House extends Component {
     ]
   }
 
-
   render() {
-    console.log(this.props)
     return (
       <React.Fragment>
 
-        <h2>{this.props.name}</h2>
+        <Header>{this.props.name}</Header>
         <AboutLinks 
           sections={this.HOUSE_LINKS} 
           handleClick={this.props.handleClickLinks} 
@@ -271,13 +286,200 @@ class House extends Component {
 }
 
 
+class ContactForm extends Component {
+
+  render() {
+
+    return(
+      <ContactFormStyled>
+        <form action="mailto:joseffsmith@icloud.com?Subject=House%20interest" 
+            method="POST"
+            encType="text/plain"
+          >
+          <Label htmlFor="house_choice">
+            House choice
+          </Label>
+          <CustomSelect houses={this.props.houses}/>
+          <Label htmlFor="name">
+            Your name
+          </Label>
+          <Input name="name" type="text"/>
+          <Label htmlFor="email">
+            Your email
+          </Label>
+          <Input name="email" type="email"/>
+          <Label htmlFor="message">
+            Message
+          </Label>
+          <Textarea name="message" type="textarea" rows="4" cols="60"/>
+          <Submit type="submit" value="Send"/>
+        </form>
+      </ContactFormStyled>
+    )
+  }
+}
+
+const ContactFormStyled = styled.div`
+  width: 300px;
+`
+
+const Input = styled.input`
+  display:block;
+  width: 95%;
+
+  color: ${color_red};
+  margin-right: -0.5em;
+  padding: 0.25em 0em .25em 1em;
+  font-size: 1.15em;
+
+  -webkit-appearance: none;
+  border:none;
+  border-bottom: 2px solid ${color_red};
+  line-height: 26px;
+
+  &:focus {
+    outline:none;
+  }
+`
+
+const Textarea = styled.textarea`
+  display:block;
+  width: 95%;
+
+  color: ${color_red};
+  margin-right: -0.5em;
+  padding: 0.25em 0em .25em 1em;
+  font-size: 1.15em;
+
+  -webkit-appearance: none;
+  border:none;
+  border-bottom: 2px solid ${color_red};
+  line-height: 26px;
+
+  &:focus {
+    outline:none;
+  }
+`
+const Label = styled.label`
+  display:block;
+  padding-top: 15px;
+`
+
+const Submit = styled.input`
+  background: transparent;
+
+  border: 2px solid ${color_dark_green};
+  color: ${color_dark_green};
+  margin: .4em .5em;
+  padding: 0.25em 1em;
+  font-size: 1.15em;
+  cursor: pointer;
+  float:right;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: ${color_dark_green};
+    color: ${color_white};
+  }
+`
+
+class CustomSelect extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      current_house: "Glenroy Street",
+      dropdown_visibile: false,
+    }
+  }
+
+  handleClick = (e) => {
+    console.log(e)
+    if (this.state.dropdown_visibile) {
+      this.setState({dropdown_visibile:false})
+    }
+    else {
+      this.setState({dropdown_visibile: true})
+    }
+  }
+
+  handleClickSelection = (e) => {
+    this.setState({
+      dropdown_visibile: false,
+      current_house: e.target.innerHTML,
+    })
+  }
+
+  render(){
+    return(
+      <SelectWrap>
+        <CurrentSelection onClick={this.handleClick}>
+          {this.state.current_house}
+        </CurrentSelection>
+        {this.state.dropdown_visibile &&
+          <Dropdown >
+            {this.props.houses.map((house, i) => (
+              <Selection 
+                  key={i} 
+                  value={house.name}
+                  onClick={this.handleClickSelection}>
+                {house.name}
+              </Selection>
+            ))}
+          </Dropdown>}
+      </SelectWrap>
+    )
+  }
+}
+const SelectWrap = styled.div`
+  cursor: pointer;
+`
+const CurrentSelection = styled.div`
+  background: transparent;
+  border: 2px solid ${color_red};
+  color: ${color_red};
+  margin: 0;
+  padding: 0.25em 1em;
+  font-size: 1.15em;
+  
+`
+const Dropdown = styled.div`
+  position: absolute;
+  background-color: white;
+  border: 2px solid ${color_red};
+  border-top: 0px;
+  color: ${color_red};
+  margin: 0;
+  font-size: 1.15em;
+
+`
+const Selection = styled.div`
+  width:265px;
+  padding: 0.25em 1em;
+  &:hover {
+    background: ${color_red};
+    color: ${color_white};
+  }
+
+  
+`
+
+
 class AboutLinks extends Component {
 
   render() {
     return (
       <AboutLinksStyled>
         {this.props.sections.map((section, j) => (
-          <Button href="#" key={j} active={this.props.current_section===section.name} onClick={this.props.handleClick}>{section.name}</Button>
+          <Button 
+            href="#" 
+            key={j} 
+            active={this.props.current_section===section.name} 
+            onClick={this.props.handleClick}>
+              {section.name}
+            </Button>
         ))}
       </AboutLinksStyled>
     )
@@ -343,28 +545,34 @@ class Pictures extends Component {
       />
     );
   }
-
 }
+const AltButton = styled.button`
+  background: transparent;
 
-const PictureFrame = styled.div`
-  white-space: nowrap;
-  overflow-x: auto;
-  background: ${color_grey};
-  -webkit-overflow-scrolling: touch;
+  border: 2px solid ${color_dark_green};
+  color: ${color_dark_green};
+  margin: .4em .5em;
+  padding: 0.25em 1em;
+  font-size: 1.15em;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: ${color_dark_green};
+    color: ${color_white};
+  }
+
+  ${props => props.alignRight && css`
+    float: right;
+  `}
 `
-const Picture = styled.img`
-  display: inline-block;
-  vertical-align: middle;
-  margin: 10px;
-  width: 100%;
-`
-
-
 
 
 const Button = styled.button`
   background: transparent;
-  border-radius: 3px;
   border: 2px solid ${color_red};
   color: ${color_red};
   margin: .4em .5em;
@@ -376,10 +584,20 @@ const Button = styled.button`
     outline: none;
   }
 
+  &:hover {
+    background: ${color_red};
+    color: ${color_white};
+  }
+
+  ${props => props.align}
+
   ${props => props.active && css`
     background: ${color_red};
     color: ${color_white};
     cursor: default;
+  `}
+  ${props => props.alignRight && css`
+    float: right;
   `}
 
 `
