@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import  styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
-import { Map, TileLayer, Marker, Popup } from 'leaflet'
+import Leaflet from 'leaflet';
+import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
+
+Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/';
+
 
 const color_grey = "#efefef"
 const color_red = "#a12a2a"
@@ -292,7 +296,7 @@ class House extends Component {
             houses={this.props.houses}/>
         }
         {this.props.current_section === "Location" &&
-          <Location 
+          <ReactMap 
             current_house={this.props.current_house}
             houses={this.props.houses}
           />
@@ -560,46 +564,36 @@ class Pictures extends Component {
         }
     ))
     return (
-      <PicturesStyled>
-        <ImageGallery 
-          items={images}
-          lazyLoad={true}
-          thumbnailPosition={"top"}
-          showPlayButton={false}
-          showFullscreenButton={false}
+      <ImageGallery 
+        items={images}
+        thumbnailPosition={"top"}
+        showPlayButton={false}
+        showFullscreenButton={false}
 
-        />
-      </PicturesStyled>
+      />
     );
   }
 }
 
-const PicturesStyled = styled.div`
-  max-height:50vh;
-`
 
-class Location extends Component {
+class ReactMap extends Component {
+
   render() {
     const house = this.props.houses.find(house => house.name === this.props.current_house)
     const location = [house.location.lat, house.location.lng]
     return (
-      <div>
-        <Map center={location} zoom={12}>
+      <div className="map" style={{ width: '100%', padding: '50px;' }}>
+        <Map style={{ height: '50vh', width: '90%' }} center={location} zoom={13} className="map__reactleaflet">
           <TileLayer
-            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
           />
-          <Marker position={location}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          <Marker position={location} />
         </Map>
       </div>
-    )
+    );
   }
 }
-
 
 
 const AltButton = styled.button`

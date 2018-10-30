@@ -24,4 +24,6 @@ img {
 	display: inline-block;
 }
 
-
+#map-map { 
+	height: 100px;
+ }
