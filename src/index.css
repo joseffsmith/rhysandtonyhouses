@@ -27,3 +27,8 @@ img {
 #map-map { 
 	height: 100px;
  }
+
+ path {
+ 	stroke: #a12a2a;
+ 	fill: #a12a2a;
+ }

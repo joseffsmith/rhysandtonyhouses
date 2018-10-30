@@ -3,7 +3,7 @@ import './App.css';
 import  styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import Leaflet from 'leaflet';
-import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
+import { Map, CircleMarker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
 
 Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/';
 
@@ -582,18 +582,19 @@ class ReactMap extends Component {
     const house = this.props.houses.find(house => house.name === this.props.current_house)
     const location = [house.location.lat, house.location.lng]
     return (
-      <div className="map" style={{ width: '100%', padding: '50px;' }}>
-        <Map style={{ height: '50vh', width: '90%' }} center={location} zoom={13} className="map__reactleaflet">
+      <div className="map" >
+        <Map style={{ height: '60vh', width: '90%', margin: '0 auto' }} center={location} zoom={15} className="map__reactleaflet">
           <TileLayer
             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
           />
-          <Marker position={location} />
+          <CircleMarker center={location} radius={20} />
         </Map>
       </div>
     );
   }
 }
+
 
 
 const AltButton = styled.button`
