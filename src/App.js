@@ -3,7 +3,7 @@ import './App.css';
 import  styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import Leaflet from 'leaflet';
-import { Map, CircleMarker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
+import { Map, Circle, TileLayer } from 'react-leaflet';
 
 Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/';
 
@@ -588,7 +588,7 @@ class ReactMap extends Component {
             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
           />
-          <CircleMarker center={location} radius={20} />
+          <Circle center={location} radius={20} />
         </Map>
       </div>
     );

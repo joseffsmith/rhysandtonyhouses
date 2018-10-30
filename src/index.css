@@ -15,18 +15,6 @@ body {
   background-color: #fcfcfc;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-img {
-	display: inline-block;
-}
-
-#map-map { 
-	height: 100px;
- }
 
  path {
  	stroke: #a12a2a;
