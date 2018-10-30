@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import  styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
+import { Map, TileLayer, Marker, Popup } from 'leaflet'
 
 const color_grey = "#efefef"
 const color_red = "#a12a2a"
@@ -40,6 +41,10 @@ class App extends Component {
         'rent': 350,
         'available_date': '01/07/19',
         'bedrooms': 7,
+        'location': {
+          'lat': 51.4922,
+          'lng':-3.168221
+        }
       },
       {
         'name':'Mackintosh Place',
@@ -69,6 +74,10 @@ class App extends Component {
         'rent': 350,
         'available_date': '01/07/19',
         'bedrooms': 7,
+        'location': {
+          'lat':51.495,
+          'lng':-3.173
+        }
       }
     ]
     this.state = {
@@ -115,6 +124,7 @@ class App extends Component {
             houseFeatures={houseInfo.features}
             handleClickLinks={this.handleClickLinks}
             current_section={this.state.current_section}
+            current_house={this.state.current_house}
           />
         }
         {this.state.current_house === null &&
@@ -281,6 +291,12 @@ class House extends Component {
             name={this.props.name}
             houses={this.props.houses}/>
         }
+        {this.props.current_section === "Location" &&
+          <Location 
+            current_house={this.props.current_house}
+            houses={this.props.houses}
+          />
+        }
       </React.Fragment>
     )
   }
@@ -303,7 +319,7 @@ class ContactForm extends Component {
     return(
       <ContactFormStyled>
         <form action={"mailto:joseffsmith@icloud.com?Subject="+this.state.current_house}
-            method="POST"
+            method="get"
             encType="text/plain"
           >
           <Label htmlFor="house_choice">
@@ -476,8 +492,6 @@ const Selection = styled.div`
 
   
 `
-
-
 class AboutLinks extends Component {
 
   render() {
@@ -546,17 +560,48 @@ class Pictures extends Component {
         }
     ))
     return (
-      <ImageGallery 
-        items={images}
-        lazyLoad={true}
-        thumbnailPosition={"top"}
-        showPlayButton={false}
-        showFullscreenButton={false}
+      <PicturesStyled>
+        <ImageGallery 
+          items={images}
+          lazyLoad={true}
+          thumbnailPosition={"top"}
+          showPlayButton={false}
+          showFullscreenButton={false}
 
-      />
+        />
+      </PicturesStyled>
     );
   }
 }
+
+const PicturesStyled = styled.div`
+  max-height:50vh;
+`
+
+class Location extends Component {
+  render() {
+    const house = this.props.houses.find(house => house.name === this.props.current_house)
+    const location = [house.location.lat, house.location.lng]
+    return (
+      <div>
+        <Map center={location} zoom={12}>
+          <TileLayer
+            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={location}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </Map>
+      </div>
+    )
+  }
+}
+
+
+
 const AltButton = styled.button`
   background: transparent;
 
@@ -574,6 +619,12 @@ const AltButton = styled.button`
   &:hover {
     background: ${color_dark_green};
     color: ${color_white};
+  }
+
+  @media (max-width: 460px){
+    float: none;
+    margin: 0em;
+    display: block;
   }
 
   ${props => props.alignRight && css`

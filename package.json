@@ -5,9 +5,11 @@
   "homepage": "https://joseffsmith.github.io/rhysandtonyhouses",
   "dependencies": {
     "gh-pages": "^2.0.1",
+    "leaflet": "^1.3.4",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.6.0",
     "react-image-gallery": "^0.8.12",
+    "react-leaflet": "^2.1.1",
     "react-scripts": "2.0.5",
     "styled-components": "^4.0.0"
   },
