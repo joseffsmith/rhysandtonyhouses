@@ -15,8 +15,7 @@ body {
   background-color: #fcfcfc;
 }
 
-
- path {
- 	stroke: #a12a2a;
- 	fill: #a12a2a;
- }
+path {
+  stroke: #a12a2a;
+  fill: #a12a2a;
+}

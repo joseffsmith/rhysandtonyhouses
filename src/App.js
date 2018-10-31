@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import  styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import Leaflet from 'leaflet';
 import { Map, Circle, TileLayer } from 'react-leaflet';
 
-Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/';
+Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/';
 
 
 const color_grey = "#efefef"
@@ -13,7 +13,7 @@ const color_white = "#f9f9f9"
 const color_dark_green = "#0e3f00"
 
 
-class App extends Component {
+export default class App extends Component {
   constructor(props){
     super(props)
     this.HOUSES = [
@@ -103,7 +103,6 @@ class App extends Component {
 
   handleContactClick = (e) => {
     window.location.href='mailto:joseffsmith@icloud.com'
-    //this.setState({current_house: null})
   }
 
   getHouseInfo = () => {
@@ -129,11 +128,6 @@ class App extends Component {
             handleClickLinks={this.handleClickLinks}
             current_section={this.state.current_section}
             current_house={this.state.current_house}
-          />
-        }
-        {this.state.current_house === null &&
-          <ContactForm 
-            houses={this.HOUSES}
           />
         }
       </Main>
@@ -168,11 +162,15 @@ class NavBar extends Component {
       navLinksVisible: !prevState.navLinksVisible
     }))
   }
-  handleClick = (e) => {
+  handleHouseClick = (e) => {
     this.props.handleClick(e)
     this.setState(prevState => ({
       navLinksVisible: !prevState.navLinksVisible
     }))
+  }
+  handleContactClick = (e) => {
+    e.preventDefault();
+    window.location.href="mailto:joseffsmith@icloud.com";
   }
 
   render() {
@@ -185,7 +183,9 @@ class NavBar extends Component {
           <Header>
             EinTai
           </Header>
-          <AltButton action="mailto:joseffsmith@icloud.com" alignRight={true} onClick={this.props.handleContactClick}>
+          <AltButton 
+              alignRight={true}
+              onClick={this.handleContactClick}>
             Contact
           </AltButton>
         </NavBarStyled>
@@ -193,7 +193,7 @@ class NavBar extends Component {
           visible={this.state.navLinksVisible} 
           current_house={this.props.current_house} 
           houses={this.props.houses} 
-          handleClick={this.handleClick}
+          handleHouseClick={this.handleHouseClick}
         />
       </React.Fragment>
 
@@ -228,7 +228,7 @@ class NavLinks extends Component {
       {this.props.visible && this.props.houses.map((house,i) => (
         <div key={i}>
           <Button 
-            onClick={this.props.handleClick} 
+            onClick={this.props.handleHouseClick} 
             href="#" 
             active={this.props.current_house===house.name} 
             value={house.name} 
@@ -307,196 +307,6 @@ class House extends Component {
 }
 
 
-class ContactForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      current_house: "Glenroy Street"
-    }
-  }
-
-  handleClick = (e) => {
-    this.setState({current_house: e.target.innerHTML})
-  }
-
-  render() {
-    return(
-      <ContactFormStyled>
-        <form action={"mailto:joseffsmith@icloud.com?Subject="+this.state.current_house}
-            method="get"
-            encType="text/plain"
-            target="_blank"
-          >
-          <Label htmlFor="house_choice">
-            House choice
-          </Label>
-          <CustomSelect 
-            houses={this.props.houses}
-            current_house={this.state.current_house}
-            handleHouseClick={this.handleClick}/>
-          <Label htmlFor="name">
-            Your name
-          </Label>
-          <Input name="name" type="text"/>
-          <Label htmlFor="email">
-            Your email
-          </Label>
-          <Input name="email" type="email"/>
-          <Label htmlFor="message">
-            Message
-          </Label>
-          <Textarea name="message" type="textarea" rows="4" cols="60"/>
-          <Submit type="submit" value="Send"/>
-        </form>
-      </ContactFormStyled>
-    )
-  }
-}
-
-const ContactFormStyled = styled.div`
-  width: 300px;
-`
-
-const Input = styled.input`
-  display:block;
-  width: 95%;
-
-  color: ${color_red};
-  margin-right: -0.5em;
-  padding: 0.25em 0em .25em 1em;
-  font-size: 1.15em;
-
-  -webkit-appearance: none;
-  border:none;
-  border-bottom: 2px solid ${color_red};
-  line-height: 26px;
-
-  &:focus {
-    outline:none;
-  }
-`
-
-const Textarea = styled.textarea`
-  display:block;
-  width: 95%;
-
-  color: ${color_red};
-  margin-right: -0.5em;
-  padding: 0.25em 0em .25em 1em;
-  font-size: 1.15em;
-
-  -webkit-appearance: none;
-  border:none;
-  border-bottom: 2px solid ${color_red};
-  line-height: 26px;
-
-  &:focus {
-    outline:none;
-  }
-`
-const Label = styled.label`
-  display:block;
-  padding-top: 15px;
-`
-
-const Submit = styled.input`
-  background: transparent;
-
-  border: 2px solid ${color_dark_green};
-  color: ${color_dark_green};
-  margin: .4em .5em;
-  padding: 0.25em 1em;
-  font-size: 1.15em;
-  cursor: pointer;
-  float:right;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    background: ${color_dark_green};
-    color: ${color_white};
-  }
-`
-
-class CustomSelect extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      dropdown_visibile: false,
-    }
-  }
-
-  handleClick = (e) => {
-    if (this.state.dropdown_visibile) {
-      this.setState({dropdown_visibile:false})
-    }
-    else {
-      this.setState({dropdown_visibile: true})
-    }
-  }
-
-  handleClickSelection = (e) => {
-    this.setState({
-      dropdown_visibile: false,
-    })
-    this.props.handleHouseClick(e)
-  }
-
-  render(){
-    return(
-      <SelectWrap>
-        <CurrentSelection onClick={this.handleClick}>
-          {this.props.current_house}
-        </CurrentSelection>
-        {this.state.dropdown_visibile &&
-          <Dropdown >
-            {this.props.houses.map((house, i) => (
-              <Selection 
-                  key={i} 
-                  value={house.name}
-                  onClick={this.handleClickSelection}>
-                {house.name}
-              </Selection>
-            ))}
-          </Dropdown>}
-      </SelectWrap>
-    )
-  }
-}
-const SelectWrap = styled.div`
-  cursor: pointer;
-`
-const CurrentSelection = styled.div`
-  background: transparent;
-  border: 2px solid ${color_red};
-  color: ${color_red};
-  margin: 0;
-  padding: 0.25em 1em;
-  font-size: 1.15em;
-  
-`
-const Dropdown = styled.div`
-  position: absolute;
-  background-color: white;
-  border: 2px solid ${color_red};
-  border-top: 0px;
-  color: ${color_red};
-  margin: 0;
-  font-size: 1.15em;
-
-`
-const Selection = styled.div`
-  width:265px;
-  padding: 0.25em 1em;
-  &:hover {
-    background: ${color_red};
-    color: ${color_white};
-  }
-
-  
-`
 class AboutLinks extends Component {
 
   render() {
@@ -515,10 +325,10 @@ class AboutLinks extends Component {
     )
   }
 }
-
 const AboutLinksStyled = styled.div`
   margin-bottom: 20px;
 `
+
 
 class Info extends Component {
 
@@ -583,8 +393,12 @@ class ReactMap extends Component {
     const house = this.props.houses.find(house => house.name === this.props.current_house)
     const location = [house.location.lat, house.location.lng]
     return (
-      <div className="map" >
-        <Map style={{ height: '60vh', width: '90%', margin: '0 auto' }} center={location} zoom={15} className="map__reactleaflet">
+      <div className="map">
+        <Map 
+            style={{ height: '60vh', width: '90%', margin: '0 auto' }} 
+            center={location} 
+            zoom={15} 
+            className="map__reactleaflet">
           <TileLayer
             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
@@ -617,12 +431,10 @@ const AltButton = styled.button`
     color: ${color_white};
   }
 
-
   ${props => props.alignRight && css`
     float: right;
   `}
 `
-
 
 const Button = styled.button`
   background: transparent;
@@ -642,8 +454,6 @@ const Button = styled.button`
     color: ${color_white};
   }
 
-  ${props => props.align}
-
   ${props => props.active && css`
     background: ${color_red};
     color: ${color_white};
@@ -652,7 +462,4 @@ const Button = styled.button`
   ${props => props.alignRight && css`
     float: right;
   `}
-
 `
-
-export default App;
