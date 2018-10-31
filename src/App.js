@@ -103,7 +103,8 @@ class App extends Component {
   }
 
   handleContactClick = (e) => {
-    this.setState({current_house: null})
+    window.location.href='mailto:joseffsmith@icloud.com'
+    //this.setState({current_house: null})
   }
 
   getHouseInfo = () => {
@@ -185,7 +186,7 @@ class NavBar extends Component {
           <Header>
             EinTai
           </Header>
-          <AltButton alignRight={true} onClick={this.props.handleContactClick}>
+          <AltButton action="mailto:joseffsmith@icloud.com" alignRight={true} onClick={this.props.handleContactClick}>
             Contact
           </AltButton>
         </NavBarStyled>
@@ -325,6 +326,7 @@ class ContactForm extends Component {
         <form action={"mailto:joseffsmith@icloud.com?Subject="+this.state.current_house}
             method="get"
             encType="text/plain"
+            target="_blank"
           >
           <Label htmlFor="house_choice">
             House choice
