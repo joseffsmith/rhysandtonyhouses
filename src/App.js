@@ -183,7 +183,7 @@ class NavBar extends Component {
             ☰
           </MenuIcon>
           <Header>
-            Rhys and Tony houses
+            EinTai
           </Header>
           <AltButton alignRight={true} onClick={this.props.handleContactClick}>
             Contact
@@ -216,7 +216,7 @@ const Header = styled.h1`
   display: inline-block;
   padding: 0px 10px;
   line-height: 30px;
-  font-size: 1.5em;
+  font-size: 2em;
 `
 
 
@@ -616,11 +616,6 @@ const AltButton = styled.button`
     color: ${color_white};
   }
 
-  @media (max-width: 460px){
-    float: none;
-    margin: 0em;
-    display: block;
-  }
 
   ${props => props.alignRight && css`
     float: right;
