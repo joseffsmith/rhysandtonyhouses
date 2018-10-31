@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import  styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import Leaflet from 'leaflet';
