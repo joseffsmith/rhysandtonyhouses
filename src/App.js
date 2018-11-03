@@ -144,7 +144,7 @@ const Main = styled.div`
   padding: 10px;
   height: 100%;
   background-color: white;
-  padding-bottom: 150px;
+  padding-bottom: 50px;
 `
 
 
@@ -170,7 +170,7 @@ class NavBar extends Component {
   }
   handleContactClick = (e) => {
     e.preventDefault();
-    window.location.href="mailto:joseffsmith@icloud.com";
+    window.open("mailto:joseffsmith@icloud.com", "_top");
   }
 
   render() {
