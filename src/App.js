@@ -392,11 +392,7 @@ class ReactMap extends Component {
 
 
   handleMarkerClick = (e) => {
-    window.open(`https://www.google.com/maps/search/?api=1
-      &query=${this.house.location.lat},${this.house.location.lng}
-      &query_place_id=${this.house.location.google_place_id}`,
-      "_blank"
-    )
+    window.open(`https://www.google.com/maps/search/?api=1&query=${this.house.location.lat},${this.house.location.lng}&query_place_id=${this.house.location.google_place_id}`,"_blank")
   }
 
   render() {
