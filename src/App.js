@@ -45,8 +45,8 @@ export default class App extends Component {
         'available_date': '01/07/19',
         'bedrooms': 7,
         'location': {
-          'lat': 51.4922,
-          'lng':-3.168221
+          'lat': 51.491813, 
+          'lng': -3.169616
         }
       },
       {
@@ -78,8 +78,8 @@ export default class App extends Component {
         'available_date': '01/07/19',
         'bedrooms': 7,
         'location': {
-          'lat':51.495,
-          'lng':-3.173
+          'lat':51.493712, 
+          'lng':-3.172461
         }
       }
     ]
