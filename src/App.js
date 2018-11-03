@@ -101,10 +101,6 @@ export default class App extends Component {
       this.setState({current_section})
   }
 
-  handleContactClick = (e) => {
-    window.location.href='mailto:joseffsmith@icloud.com'
-  }
-
   getHouseInfo = () => {
     return this.HOUSES.find(house => house.name === this.state.current_house)
   }
@@ -117,7 +113,6 @@ export default class App extends Component {
           houses={this.HOUSES} 
           current_house={this.state.current_house} 
           handleClick={this.handleClick}
-          handleContactClick={this.handleContactClick}
         />
         {this.state.current_house && 
           <House
@@ -170,7 +165,7 @@ class NavBar extends Component {
   }
   handleContactClick = (e) => {
     e.preventDefault();
-    window.open("mailto:joseffsmith@icloud.com", "_top");
+    window.open("mailto:info@eintai.co.uk", "_top");
   }
 
   render() {
