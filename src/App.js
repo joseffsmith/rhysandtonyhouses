@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import Leaflet from 'leaflet';
-import { Map, Circle, TileLayer } from 'react-leaflet';
+import { Map, CircleMarker, TileLayer } from 'react-leaflet';
 
 Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/';
 
@@ -46,7 +46,8 @@ export default class App extends Component {
         'bedrooms': 7,
         'location': {
           'lat': 51.491813, 
-          'lng': -3.169616
+          'lng': -3.169616,
+          'google_place_id': "EhxHbGVucm95IFN0LCBDYXJkaWZmIENGMjQsIFVLIi4qLAoUChIJ0SWjNsAcbkgR3RVu5ESw8BYSFAoSCamRx0IRO1oCEXoliDJDoPjE"
         }
       },
       {
@@ -79,7 +80,8 @@ export default class App extends Component {
         'bedrooms': 7,
         'location': {
           'lat':51.493712, 
-          'lng':-3.172461
+          'lng':-3.172461,
+          'google_place_id': "Eh9NYWNLaW50b3NoIFBsLCBDYXJkaWZmIENGMjQsIFVLIi4qLAoUChIJ-yrJHZUcbkgRRRw6sv8W-KsSFAoSCamRx0IRO1oCEXoliDJDoPjE"
         }
       }
     ]
@@ -383,22 +385,34 @@ class Pictures extends Component {
 
 
 class ReactMap extends Component {
+  constructor(props){
+    super(props)
+    this.house = this.props.houses.find(house => house.name === this.props.current_house)
+  }
+
+
+  handleMarkerClick = (e) => {
+    window.open(`https://www.google.com/maps/search/?api=1
+      &query=${this.house.location.lat},${this.house.location.lng}
+      &query_place_id=${this.house.location.google_place_id}`,
+      "_blank"
+    )
+  }
 
   render() {
-    const house = this.props.houses.find(house => house.name === this.props.current_house)
-    const location = [house.location.lat, house.location.lng]
+    const coords = [this.house.location.lat, this.house.location.lng]
     return (
       <div className="map">
         <Map 
             style={{ height: '60vh', width: '90%', margin: '0 auto' }} 
-            center={location} 
+            center={coords}
             zoom={15} 
             className="map__reactleaflet">
           <TileLayer
             url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
           />
-          <Circle center={location} radius={20} />
+          <CircleMarker center={coords} radius={15} onClick={this.handleMarkerClick} />
         </Map>
       </div>
     );
