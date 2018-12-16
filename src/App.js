@@ -213,6 +213,7 @@ const NavBarStyled = styled.div`
 const MenuIcon = styled.div`
   display: inline-block;
   font-size: 2.2em;
+  padding-left: 9px;
   border-radius: 5px;
   line-height: 30px;
   color: ${color_red};
@@ -365,7 +366,7 @@ class Info extends Component {
   render() {
     var text_array = this.renderDescription(this.props.text)
     return(
-      <React.Fragment>
+      <InfoWrapper>
         <h3> Features </h3>
         <ul>
           {this.props.features.map((feature, i) => (
@@ -376,10 +377,14 @@ class Info extends Component {
         {text_array.map((text, i) => (
           <p key={i} >{text}</p>
         ))}
-      </React.Fragment>
+      </InfoWrapper>
     )
   }
 }
+
+const InfoWrapper = styled.div`
+  margin: 0px 10px;
+`
 
 
 class Pictures extends Component {
@@ -406,7 +411,7 @@ class Pictures extends Component {
         thumbnailPosition={"top"}
         showPlayButton={false}
         showFullscreenButton={false}
-
+        style={{'margin': '0px 10px'}}
       />
     );
   }
@@ -429,7 +434,7 @@ class ReactMap extends Component {
     return (
       <div className="map">
         <Map 
-            style={{ height: '60vh', width: '90%', margin: '0 auto' }} 
+            style={{ height: '60vh', width: '95%', margin: '0 10px', }} 
             center={coords}
             zoom={15} 
             className="map__reactleaflet">
@@ -474,7 +479,7 @@ const Button = styled.button`
   background: transparent;
   border: 2px solid ${color_red};
   color: ${color_red};
-  margin: .4em .5em;
+  margin: 0px 10px;
   padding: 0.25em 1em;
   font-size: 1.15em;
   cursor: pointer;
