@@ -479,7 +479,7 @@ const Button = styled.button`
   background: transparent;
   border: 2px solid ${color_red};
   color: ${color_red};
-  margin: 0px 10px;
+  margin: 10px 10px;
   padding: 0.25em 1em;
   font-size: 1.15em;
   cursor: pointer;
