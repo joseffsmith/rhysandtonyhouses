@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import ImageGallery from 'react-image-gallery';
 import Leaflet from 'leaflet';
 import { Map, CircleMarker, TileLayer } from 'react-leaflet';
@@ -9,6 +9,7 @@ Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4
 
 const color_grey = "#efefef"
 const color_red = "#a12a2a"
+const color_red_hover = "#ce4141"
 const color_white = "#f9f9f9"
 const color_dark_green = "#0e3f00"
 
@@ -55,7 +56,7 @@ export default class App extends Component {
         'images':require.context("./images/Mackintosh Place", false, /.*\.jpeg$/),
         'images_t':require.context("./images/Mackintosh Place thumbs", false, /.*\.jpg$/),
         'features':[
-          "7 double bathrooms ",
+          "7 double bedrooms",
           "2 bathrooms + 1 cloakroom",
           "Dining room",
           "TV/reception room",
@@ -91,13 +92,13 @@ export default class App extends Component {
     }
   }
 
-  handleClick = (e) => { 
+  handleClick = e => { 
     var current_house = e.target.innerHTML
     if (this.state.current_house !== current_house)
       this.setState({current_house, current_section: "Info"})
   }
 
-  handleClickLinks = (e) => {
+  handleClickLinks = e => {
     var current_section = e.target.innerHTML
     if (this.state.current_section !== current_section)
       this.setState({current_section})
@@ -110,27 +111,31 @@ export default class App extends Component {
   render() {
     var houseInfo = this.getHouseInfo()
     return (
-      <Main>
+      <React.Fragment>
         <NavBar 
           houses={this.HOUSES} 
           current_house={this.state.current_house} 
           handleClick={this.handleClick}
         />
-        {this.state.current_house && 
-          <House
-            name={this.state.current_house} 
-            houses={this.HOUSES} 
-            houseDescription={houseInfo.description}
-            houseFeatures={houseInfo.features}
-            handleClickLinks={this.handleClickLinks}
-            current_section={this.state.current_section}
-            current_house={this.state.current_house}
-          />
-        }
-      </Main>
+        <Main>
+
+          {this.state.current_house && 
+            <House
+              name={this.state.current_house} 
+              houses={this.HOUSES} 
+              houseDescription={houseInfo.description}
+              houseFeatures={houseInfo.features}
+              handleClickLinks={this.handleClickLinks}
+              current_section={this.state.current_section}
+              current_house={this.state.current_house}
+            />
+          }
+        </Main>
+      </React.Fragment>
     );
   }
 }
+
 
 const Main = styled.div`
   max-width:600px;
@@ -200,14 +205,22 @@ class NavBar extends Component {
 const NavBarStyled = styled.div`
   background-color:${color_grey};
   padding: 10px;
+  line-height: 22px;
+  letter-spacing: .5px;
+
+
 `
 const MenuIcon = styled.div`
   display: inline-block;
-  font-size: 2em;
+  font-size: 2.2em;
   border-radius: 5px;
   line-height: 30px;
   color: ${color_red};
   cursor: pointer;
+
+  &:hover {
+    color: ${color_red_hover};
+  }
 `
 const Header = styled.h1`
   display: inline-block;
@@ -221,8 +234,8 @@ class NavLinks extends Component {
 
   render() {
     return (
-      <NavLinksStyled> 
-      {this.props.visible && this.props.houses.map((house,i) => (
+      <NavLinksStyled visible={this.props.visible}> 
+      {this.props.houses.map((house,i) => (
         <div key={i}>
           <Button 
             onClick={this.props.handleHouseClick} 
@@ -240,11 +253,27 @@ class NavLinks extends Component {
   }
 }
 
+const expand = keyframes`
+  0% { height: 0px; opacity: 0; }
+  20% { height: 60px; }
+  30% { height: 70px; }
+  40% { height: 90px; }
+  50% { height: auto; }
+  100% { opacity: 1; }
+`
+
 const NavLinksStyled = styled.div`
   margin-bottom: 10px;
-  display:block;
+  display:none;
   position:absolute;
   background-color:${color_grey};
+  border: 1px solid ${color_red};
+
+
+  ${props => props.visible && css`
+    display:block;
+    animation: .25s ${expand};
+  `}
 
 `
 
@@ -455,14 +484,14 @@ const Button = styled.button`
   }
 
   &:hover {
-    background: ${color_red};
+    background-color: ${color_red_hover};
     color: ${color_white};
+    border-color: ${color_red_hover};
   }
 
   ${props => props.active && css`
     background: ${color_red};
     color: ${color_white};
-    cursor: default;
   `}
   ${props => props.alignRight && css`
     float: right;
