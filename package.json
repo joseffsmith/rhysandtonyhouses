@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "predeploy": "npm run build",
-    "deploy": "aws s3 rm s3://eintai.co.uk/static/js --recursive && aws s3 rm s3://eintai.co.uk/static/css --recursive && aws s3 cp build s3://eintai.co.uk --recursive --exclude '*/media/*'",
+    "deploy": "aws s3 rm s3://eintai.co.uk/ --exclude '*' --include '*manifest*' --recursive && aws s3 rm s3://eintai.co.uk/static/js --recursive && aws s3 rm s3://eintai.co.uk/static/css --recursive && aws s3 cp build s3://eintai.co.uk --recursive --exclude '*/media/*'",
     "deploy-media": "aws s3 cp build s3://eintai.co.uk --recursive",    
     "eject": "react-scripts eject"
   },
