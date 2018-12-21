@@ -1,3 +1,3 @@
 # Cardiff student houses
 
-Website using React to advertise student houses in Cardiff.
+Website using `create-react-app` to advertise student houses in Cardiff.
