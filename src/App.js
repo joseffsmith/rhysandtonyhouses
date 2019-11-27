@@ -303,13 +303,12 @@ class House extends Component {
       <React.Fragment>
 
         <Header>{this.props.name}</Header>
-        <AboutLinks 
-          sections={this.HOUSE_LINKS} 
-          handleClick={this.props.handleClickLinks} 
+        <AboutLinks
+          sections={this.HOUSE_LINKS}
+          handleClick={this.props.handleClickLinks}
           current_section={this.props.current_section}
         />
-        
-        {this.props.current_section === "Info" && 
+        {this.props.current_section === "Info" &&
           <Info 
             name={this.props.name}
             houses={this.props.houses}
