@@ -17,8 +17,8 @@ var mackintosh = L.circle([51.493712, -3.172461], {
 }).addTo(mymap);
 
 glenroy.on('click', e => {
-  window.open(`https://www.google.com/maps/search/?api=1&query=51.491813,-3.169616&query_place_id=EhxHbGVucm95IFN0LCBDYXJkaWZmIENGMjQsIFVLIi4qLAoUChIJ0SWjNsAcbkgR3RVu5ESw8BYSFAoSCamRx0IRO1oCEXoliDJDoPjE`,"_blank")
+    window.open(`https://www.google.com/maps/search/?api=1&query=51.491813,-3.169616&query_place_id=EhxHbGVucm95IFN0LCBDYXJkaWZmIENGMjQsIFVLIi4qLAoUChIJ0SWjNsAcbkgR3RVu5ESw8BYSFAoSCamRx0IRO1oCEXoliDJDoPjE`, "_blank")
 })
 mackintosh.on('click', e => {
-  window.open(`https://www.google.com/maps/search/?api=1&query=51.493712,-3.172461&query_place_id=Eh9NYWNLaW50b3NoIFBsLCBDYXJkaWZmIENGMjQsIFVLIi4qLAoUChIJ-yrJHZUcbkgRRRw6sv8W-KsSFAoSCamRx0IRO1oCEXoliDJDoPjE`,"_blank")
+    window.open(`https://www.google.com/maps/search/?api=1&query=51.493712,-3.172461&query_place_id=Eh9NYWNLaW50b3NoIFBsLCBDYXJkaWZmIENGMjQsIFVLIi4qLAoUChIJ-yrJHZUcbkgRRRw6sv8W-KsSFAoSCamRx0IRO1oCEXoliDJDoPjE`, "_blank")
 })
