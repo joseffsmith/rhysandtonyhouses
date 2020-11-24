@@ -1,7 +1,7 @@
 /* MVP.css v1.6.2 - https://github.com/andybrewer/mvp */
 
 :root {
-  --border-radius: 5px;
+  --border-radius: 0px;
   --box-shadow: 2px 2px 10px;
   --color: #118bee;
   --color-accent: #118bee15;
@@ -20,7 +20,7 @@
   --width-card: 285px;
   --width-card-medium: 460px;
   --width-card-wide: 800px;
-  --width-content: 1080px;
+  --width-content: 800px;
 }
 
 
@@ -46,6 +46,15 @@ article aside {
   background: var(--color-secondary-accent);
   border-left: 4px solid var(--color-secondary);
   padding: 0.01rem 0.8rem;
+}
+
+article footer {
+  color: var(--color-text-secondary);
+  display: block;
+  font-size: small;
+  line-height: var(--line-height);
+  padding: 1rem 0;
+  text-align: right;
 }
 
 body {
@@ -138,12 +147,19 @@ nav {
   display: flex;
   font-weight: bold;
   justify-content: space-between;
-  margin-bottom: 7rem;
+  margin-bottom: 4rem;
 }
 
 nav ul {
   list-style: none;
   padding: 0;
+}
+
+@media screen and (max-width: 600px) {
+  nav ul {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 nav ul li {
@@ -464,4 +480,34 @@ blockquote footer {
   font-size: small;
   line-height: var(--line-height);
   padding: 1.5rem 0;
+}
+
+img {
+  display: inline-block;
+  width: 100%
+}
+
+.img-row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+.img-col {
+  flex: 48%;
+  max-width: 48%;
+  padding: 0 4px;
+}
+
+.img-col img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+@media screen and (max-width: 550px) {
+  .img-col {
+    flex: 100%;
+    max-width: 100%;
+  }
 }
